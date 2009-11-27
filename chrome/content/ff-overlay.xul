@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://net.bwong.sink/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://net.bwong.sink/locale/overlay.dtd">
+<overlay id="net.bwong.sink-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="overlay.js"/>
+  <script src="ff-overlay.js"/>
+
+  <stringbundleset id="stringbundleset">
+    <stringbundle id="net.bwong.sink-strings" src="chrome://net.bwong.sink/locale/overlay.properties"/>
+  </stringbundleset>
+
+  <menupopup id="menu_ToolsPopup">
+    <menuitem id="net.bwong.sink-hello" label="&net.bwong.sink.label;"
+              oncommand="net.bwong.sink.onMenuItemCommand(event);"/>
+  </menupopup>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+  <toolbarbutton id="net.bwong.sink-toolbar-button" class="toolbarbutton-1 chromeclass-toolbar-additional"
+    label="&net.bwong.sinkToolbarButton.label;" tooltiptext="&net.bwong.sinkToolbarButton.tooltip;"
+    oncommand="net.bwong.sink.onToolbarButtonCommand()"/>
+  </toolbarpalette>
+
+
+
+</overlay>
