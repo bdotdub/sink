@@ -1,8 +1,11 @@
 var bwongsink = {
   onLoad: function() {
     // initialization code
-    this.initialized = true;
+    if (bwongsink.initialized) return;
+
+    bwongsink.initialized = true;
     this.strings = document.getElementById("bwongsink-strings");
+    window.setTimeout("bwongsink.sinkTabs()", 1000);
   },
 
   sinkTabs: function() {
@@ -29,6 +32,7 @@ var bwongsink = {
     }
 
     bwongsink.server.sync(windows);
+    window.setTimeout("bwongsink.sinkTabs()", 60000);
   }
 };
 
@@ -47,7 +51,7 @@ bwongsink.logging = {
 }
 
 bwongsink.server = {
-  fullUrl: "http://localhost/bwong/test.php",
+  fullUrl: "http://localhost:4000/api/update",
   httpRequest: null,
 
   requestLoaded: function() {
@@ -75,7 +79,9 @@ bwongsink.server = {
   },
 
   sync: function(windows) {
-    var serializedParams = bwongsink.server.serialize(windows);
+    var serializedParams  = bwongsink.server.serialize(windows);
+    serializedParams      = 'api_key=' + bwongsink.util.getPref('extensions.bwongsink.apiKey') + '&' + serializedParams;
+    serializedParams      = 'node=' + bwongsink.util.getPref('extensions.bwongsink.node') + '&' + serializedParams;
     bwongsink.server.httpRequest = new XMLHttpRequest();
 
     bwongsink.server.httpRequest.open("POST", bwongsink.server.fullUrl, true);

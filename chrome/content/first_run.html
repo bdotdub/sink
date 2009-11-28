@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>sink</title>
+    <style>
+      * { margin: 0; padding: 0 }
+      body {
+        font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
+      }
+
+      #container {
+        margin: auto;
+        width: 800px;
+      }
+
+      .hide {
+        display: none;
+      }
+    </style>
+    <script src='util.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      bwongsink.api = {
+        chooseNode: function() {
+          var node = document.getElementById('node_dd_list').value;
+          var serializedParams = 'api_key=' + bwongsink.util.getPref('extensions.bwongsink.apiKey') + '&node=' + node;
+
+          if (node == 'BWONGSINKCREATE') {
+            var newNodeName = document.getElementById('new_node_name').value;
+            if (newNodeName == '') {
+              alert('Whoops, looks like you forgot to enter a computer name');
+              return false;
+            }
+            serializedParams += '&node_name=' + escape(newNodeName);
+          }
+
+          var httpRequest = new XMLHttpRequest();
+          httpRequest.open("POST", 'http://localhost:4000/api/choose_node',  true);
+          httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+
+          httpRequest.onload = function() {
+            bwongsink.util.clearInputFieldById('new_node_name');
+            bwongsink.util.hideElementById('node_chooser');
+
+            var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+            var response = nativeJSON.decode(httpRequest.responseText);
+
+            bwongsink.util.setPref('extensions.bwongsink.node', response['node']);
+            bwongsink.util.showElementById('done');
+          };
+          httpRequest.send(serializedParams);
+        },
+
+        listNodes: function(nodeList) {
+          var html = 'Which computer is this?<br />';
+          html += '<form onsubmit="bwongsink.api.chooseNode(); return false">'
+          html += '<select id="node_dd_list" onchange="bwongsink.api.nodeListSelectChanged()">'
+          for (var nodeIdx = 0; nodeIdx < nodeList.length; ++nodeIdx) {
+            html += '<option value="' + nodeList[nodeIdx]['node'] + '">' + nodeList[nodeIdx]['node_name'] + '</option>'
+          }
+          html += '<option value="BWONGSINKCREATE">* First Time Installing sink on this computer</option>'
+          html += '</select>'
+          html += '<div id="new_node_name_div" class="hide">'
+          html += 'Name this computer:<br /><input type="text" id="new_node_name" />'
+          html += '</div>'
+          html += '<input type="submit" value="Choose" />'
+          html += '</form>'
+
+          document.getElementById('node_chooser').innerHTML = html;
+          bwongsink.util.showElementById('node_chooser');
+        },
+
+        login: function() {
+          var username = document.getElementById('login_username').value;
+          var password = document.getElementById('login_password').value;
+          var serializedParams = 'username=' + escape(username) + '&password=' + escape(password);
+
+          var httpRequest = new XMLHttpRequest();
+          httpRequest.open("POST", 'http://localhost:4000/api/authenticate',  true);
+          httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
+
+          httpRequest.onload = function() {
+            bwongsink.util.clearInputFieldById('login_username');
+            bwongsink.util.clearInputFieldById('login_password');
+            bwongsink.util.hideElementById('login_form');
+
+            var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+            var response = nativeJSON.decode(httpRequest.responseText);
+
+            bwongsink.util.setPref('extensions.bwongsink.apiKey', response['api_key']);
+            bwongsink.api.listNodes(response['nodes']);
+          };
+          httpRequest.send(serializedParams);
+
+          return 0;
+        },
+
+        nodeListSelectChanged: function() {
+          var nodeName = document.getElementById('node_dd_list').value;
+          if (nodeName == 'BWONGSINKCREATE') {
+            bwongsink.util.showElementById('new_node_name_div');
+          }
+          else {
+            bwongsink.util.hideElementById('new_node_name_div');
+          }
+        }
+      }
+
+      bwongsink.util = {
+        prefManager: null,
+
+        clearInputFieldById: function(field_id) {
+          document.getElementById(field_id).value = '';
+        },
+
+        getPref: function(pref) {
+          var prefManager = bwongsink.util.getPrefManager();
+          return prefManager.getCharPref(pref);
+        },
+
+        getPrefManager: function() {
+          if (bwongsink.util.prefManager == null)
+            bwongsink.util.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+          return bwongsink.util.prefManager;
+        },
+
+        hideElementById: function(element_id) {
+          document.getElementById(element_id).className = 'hide';
+        },
+
+        showElementById: function(element_id) {
+          document.getElementById(element_id).className = '';
+        },
+
+        setPref: function(pref, value) {
+          var prefManager = bwongsink.util.getPrefManager();
+          prefManager.setCharPref(pref, value);
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id='container'>
+      <div id='header'>
+        <h1>sink</h1>
+      </div>
+      <div id='content'>
+        <div id='login_form'>
+          <form onsubmit='bwongsink.api.login(); return false'>
+            username: <input type='text' id='login_username' /><br />
+            password: <input type='password' id='login_password' /><br />
+            <input type='submit' value='Login' />
+          </form>
+        </div>
+        <div id='node_chooser' class='hide'>
+        </div>
+        <div id='done' class='hide'>
+          Done! You're all set.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+

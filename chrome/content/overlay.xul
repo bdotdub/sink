@@ -3,6 +3,7 @@
 <!DOCTYPE overlay SYSTEM "chrome://bwongsink/locale/overlay.dtd">
 <overlay id="bwongsink-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <script src="overlay.js"/>
+  <script src="util.js"/>
 
   <stringbundleset id="stringbundleset">
     <stringbundle id="bwongsink-strings" src="chrome://bwongsink/locale/overlay.properties"/>
