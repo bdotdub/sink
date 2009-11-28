@@ -4,4 +4,3 @@ locale    net.bwong.sink   en-US         chrome/locale/en-US/
 
 
 overlay   chrome://browser/content/browser.xul   chrome://net.bwong.sink/content/ff-overlay.xul
-style chrome://global/content/customizeToolbar.xul chrome://net.bwong.sink/skin/overlay.css
