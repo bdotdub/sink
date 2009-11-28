@@ -1,8 +1,8 @@
-<!ENTITY net.bwong.sink.label "Your localized menuitem">
-<!ENTITY net.bwong.sinkContext.label "Your Menuitem">
-<!ENTITY net.bwong.sinkContext.accesskey "Y">
-<!ENTITY net.bwong.sinkToolbarButton.label "Your Toolbar Button">
-<!ENTITY net.bwong.sinkToolbarButton.tooltip "This is your toolbar button!">
-<!ENTITY net.bwong.sinkSidebar.label "Your Sidebar">
-<!ENTITY net.bwong.sinkToolbar.name  "example">
-<!ENTITY net.bwong.sinkToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &net.bwong.sinkToolbar.name;">
+<!ENTITY bwongsink.label "Your localized menuitem">
+<!ENTITY bwongsinkContext.label "Your Menuitem">
+<!ENTITY bwongsinkContext.accesskey "Y">
+<!ENTITY bwongsinkToolbarButton.label "Your Toolbar Button">
+<!ENTITY bwongsinkToolbarButton.tooltip "This is your toolbar button!">
+<!ENTITY bwongsinkSidebar.label "Your Sidebar">
+<!ENTITY bwongsinkToolbar.name  "example">
+<!ENTITY bwongsinkToolbar.label "This is an example toolbar. You can hide it under View &gt; toolbars &gt; &bwongsinkToolbar.name;">

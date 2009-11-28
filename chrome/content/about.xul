@@ -2,7 +2,7 @@
 
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 
-<!DOCTYPE dialog SYSTEM "chrome://net.bwong.sink/locale/about.dtd">
+<!DOCTYPE dialog SYSTEM "chrome://bwongsink/locale/about.dtd">
 
 <dialog title="&about; sink" orient="vertical" autostretch="always" onload="sizeToContent()" buttons="accept" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
   <groupbox align="center" orient="horizontal">

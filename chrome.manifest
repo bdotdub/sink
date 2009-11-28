@@ -1,6 +1,6 @@
-content   net.bwong.sink                 chrome/content/
-skin      net.bwong.sink   classic/1.0   chrome/skin/
-locale    net.bwong.sink   en-US         chrome/locale/en-US/
+content   bwongsink                 chrome/content/
+skin      bwongsink   classic/1.0   chrome/skin/
+locale    bwongsink   en-US         chrome/locale/en-US/
 
 
-overlay   chrome://browser/content/browser.xul   chrome://net.bwong.sink/content/ff-overlay.xul
+overlay   chrome://browser/content/browser.xul   chrome://bwongsink/content/ff-overlay.xul

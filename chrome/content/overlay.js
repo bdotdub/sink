@@ -1,8 +1,8 @@
-var net.bwong.sink = {
+var bwongsink = {
   onLoad: function() {
     // initialization code
     this.initialized = true;
-    this.strings = document.getElementById("net.bwong.sink-strings");
+    this.strings = document.getElementById("bwongsink-strings");
   },
 
   onMenuItemCommand: function(e) {
@@ -10,12 +10,13 @@ var net.bwong.sink = {
                                   .getService(Components.interfaces.nsIPromptService);
     promptService.alert(window, this.strings.getString("helloMessageTitle"),
                                 this.strings.getString("helloMessage"));
+    alert('hi');
   },
 
   onToolbarButtonCommand: function(e) {
     // just reuse the function above.  you can change this, obviously!
-    net.bwong.sink.onMenuItemCommand(e);
+    bwongsink.onMenuItemCommand(e);
   }
 };
 
-window.addEventListener("load", net.bwong.sink.onLoad, false);
+window.addEventListener("load", bwongsink.onLoad, false);
