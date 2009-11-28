@@ -57,7 +57,7 @@ bwongsink.server = {
     bwongsink.logging.info(bwongsink.server.httpRequest.responseText);
 
     var response = bwongsink.util.safelyParseJson(bwongsink.server.httpRequest.responseText);
-    if (response['update_to_soon'] = 'true')
+    if (response['update_to_soon'] == 'true')
       window.setTimeout("bwongsink.sinkTabs()", 60000);
   },
 
