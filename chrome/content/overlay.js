@@ -20,8 +20,9 @@ var bwongsink = {
       for (var idx = 0; idx < tabBrowser.browsers.length; ++idx) {
         var tab = tabBrowser.getBrowserAtIndex(idx);
         tabs.push({
-          'uri'       : tab.currentURI.spec,
-          'selected'  : (tabBrowser.selectedTab == tabBrowser.mTabs[idx])
+          'selected'  : (tabBrowser.selectedTab == tabBrowser.mTabs[idx]),
+          'title'     : tab.contentTitle,
+          'uri'       : tab.currentURI.spec
         });
       }
       windows.push(tabs);
@@ -58,15 +59,19 @@ bwongsink.server = {
     for (var winIdx = 0; winIdx < windows.length; ++winIdx) {
       var tabs = windows[winIdx];
       for (var tabIdx = 0; tabIdx < tabs.length; ++tabIdx) {
-        var uriKey = 'window_' + winIdx + '_tab_' + tabIdx + '_uri';
-        paramsData.push(uriKey + "=" + escape(tabs[tabIdx]['uri']));
-
-        var selectedKey = 'window_' + winIdx + '_tab_' + tabIdx + '_selected';
-        paramsData.push(selectedKey + "=" + escape(tabs[tabIdx]['selected']));
+        paramsData.push(bwongsink.server.serializedStringForAttribute(tabs, 'selected', winIdx, tabIdx));
+        paramsData.push(bwongsink.server.serializedStringForAttribute(tabs, 'title', winIdx, tabIdx));
+        paramsData.push(bwongsink.server.serializedStringForAttribute(tabs, 'uri', winIdx, tabIdx));
       }
     }
 
     return paramsData.join('&')
+  },
+
+  serializedStringForAttribute: function(tabs, attribute, winIdx, tabIdx) {
+    var key = 'window_' + winIdx + '_tab_' + tabIdx + '_' + attribute;
+    var serializedString = key + "=" + escape(tabs[tabIdx][attribute]);
+    return serializedString;
   },
 
   sync: function(windows) {
