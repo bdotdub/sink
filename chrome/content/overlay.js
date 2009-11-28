@@ -5,7 +5,7 @@ var bwongsink = {
 
     bwongsink.initialized = true;
     this.strings = document.getElementById("bwongsink-strings");
-    window.setTimeout("bwongsink.sinkTabs()", 30000);
+    window.setTimeout("bwongsink.sinkTabs()", 60000);
   },
 
   sinkTabs: function() {
@@ -57,8 +57,9 @@ bwongsink.server = {
     bwongsink.logging.info(bwongsink.server.httpRequest.responseText);
 
     var response = bwongsink.util.safelyParseJson(bwongsink.server.httpRequest.responseText);
-    if (response['update_to_soon'] == 'true')
+    if (response['updated_to_soon'] == false) {
       window.setTimeout("bwongsink.sinkTabs()", 60000);
+    }
   },
 
   serialize: function(windows) {
