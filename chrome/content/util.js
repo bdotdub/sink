@@ -24,6 +24,11 @@ bwongsink.util = {
     document.getElementById(element_id).className = 'hide';
   },
 
+  safelyParseJson: function(jsonStr) {
+    var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
+    return nativeJSON.decode(jsonStr);
+  },
+
   showElementById: function(element_id) {
     document.getElementById(element_id).className = '';
   },

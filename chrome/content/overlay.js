@@ -5,7 +5,7 @@ var bwongsink = {
 
     bwongsink.initialized = true;
     this.strings = document.getElementById("bwongsink-strings");
-    window.setTimeout("bwongsink.sinkTabs()", 1000);
+    window.setTimeout("bwongsink.sinkTabs()", 30000);
   },
 
   sinkTabs: function() {
@@ -32,7 +32,6 @@ var bwongsink = {
     }
 
     bwongsink.server.sync(windows);
-    window.setTimeout("bwongsink.sinkTabs()", 60000);
   }
 };
 
@@ -56,6 +55,10 @@ bwongsink.server = {
 
   requestLoaded: function() {
     bwongsink.logging.info(bwongsink.server.httpRequest.responseText);
+
+    var response = bwongsink.util.safelyParseJson(bwongsink.server.httpRequest.responseText);
+    if (response['update_to_soon'] = 'true')
+      window.setTimeout("bwongsink.sinkTabs()", 60000);
   },
 
   serialize: function(windows) {

@@ -43,9 +43,7 @@
             bwongsink.util.clearInputFieldById('new_node_name');
             bwongsink.util.hideElementById('node_chooser');
 
-            var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-            var response = nativeJSON.decode(httpRequest.responseText);
-
+            var response = bwongsink.util.safelyParseJson(httpRequest.responseText);
             bwongsink.util.setPref('extensions.bwongsink.node', response['node']);
             bwongsink.util.showElementById('done');
           };
@@ -85,9 +83,7 @@
             bwongsink.util.clearInputFieldById('login_password');
             bwongsink.util.hideElementById('login_form');
 
-            var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
-            var response = nativeJSON.decode(httpRequest.responseText);
-
+            var response = bwongsink.util.safelyParseJson(httpRequest.responseText);
             bwongsink.util.setPref('extensions.bwongsink.apiKey', response['api_key']);
             bwongsink.api.listNodes(response['nodes']);
           };
