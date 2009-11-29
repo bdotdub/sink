@@ -1,11 +1,29 @@
 var bwongsink = {
   onLoad: function() {
-    // initialization code
-    if (bwongsink.initialized) return;
-
-    bwongsink.initialized = true;
     this.strings = document.getElementById("bwongsink-strings");
-    window.setTimeout("bwongsink.sinkTabs()", 60000);
+
+    var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+    var currentVersion = gExtensionManager.getItemForID("sink@bwong.net").version;
+
+    var lastRunVersion;
+    if (bwongsink.util.prefHasUserValue('version')) {
+      lastRunVersion = bwongsink.util.getPref('version');
+    }
+    else {
+      lastRunVersion = null;
+    }
+
+    if (currentVersion != lastRunVersion) {
+      window.setTimeout(function() {
+        gBrowser.selectedTab = gBrowser.addTab('chrome://bwongsink/content/first_run.html');
+      }, 1500);
+      document.addEventListener('BwongSinkFirstRunDone', function() {
+        window.setTimeout("bwongsink.sinkTabs()", 1000);
+      }, false, true);
+    }
+    else {
+      window.setTimeout("bwongsink.sinkTabs()", 60000);
+    }
   },
 
   sinkTabs: function() {
@@ -50,7 +68,7 @@ bwongsink.logging = {
 }
 
 bwongsink.server = {
-  fullUrl: "http://localhost:4000/api/update",
+  fullUrl: "https://sink.heroku.com/api/update",
   httpRequest: null,
 
   requestLoaded: function() {
@@ -84,8 +102,8 @@ bwongsink.server = {
 
   sync: function(windows) {
     var serializedParams  = bwongsink.server.serialize(windows);
-    serializedParams      = 'api_key=' + bwongsink.util.getPref('extensions.bwongsink.apiKey') + '&' + serializedParams;
-    serializedParams      = 'node=' + bwongsink.util.getPref('extensions.bwongsink.node') + '&' + serializedParams;
+    serializedParams      = 'api_key=' + bwongsink.util.getPref('apiKey') + '&' + serializedParams;
+    serializedParams      = 'node=' + bwongsink.util.getPref('node') + '&' + serializedParams;
     bwongsink.server.httpRequest = new XMLHttpRequest();
 
     bwongsink.server.httpRequest.open("POST", bwongsink.server.fullUrl, true);

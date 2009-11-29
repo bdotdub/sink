@@ -24,7 +24,7 @@
       bwongsink.api = {
         chooseNode: function() {
           var node = document.getElementById('node_dd_list').value;
-          var serializedParams = 'api_key=' + bwongsink.util.getPref('extensions.bwongsink.apiKey') + '&node=' + node;
+          var serializedParams = 'api_key=' + bwongsink.util.getPref('apiKey') + '&node=' + node;
 
           if (node == 'BWONGSINKCREATE') {
             var newNodeName = document.getElementById('new_node_name').value;
@@ -36,7 +36,7 @@
           }
 
           var httpRequest = new XMLHttpRequest();
-          httpRequest.open("POST", 'http://localhost:4000/api/choose_node',  true);
+          httpRequest.open("POST", 'https://sink.heroku.com/api/choose_node',  true);
           httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
 
           httpRequest.onload = function() {
@@ -44,8 +44,13 @@
             bwongsink.util.hideElementById('node_chooser');
 
             var response = bwongsink.util.safelyParseJson(httpRequest.responseText);
-            bwongsink.util.setPref('extensions.bwongsink.node', response['node']);
+            bwongsink.util.setPref('node', response['node']);
             bwongsink.util.showElementById('done');
+
+            var gExtensionManager = Components.classes["@mozilla.org/extensions/manager;1"].getService(Components.interfaces.nsIExtensionManager);
+            var currentVersion = gExtensionManager.getItemForID("sink@bwong.net").version;
+            bwongsink.util.setPref('version', currentVersion);
+            bwongsink.api.notifyExtensionOfDone();
           };
           httpRequest.send(serializedParams);
         },
@@ -75,7 +80,7 @@
           var serializedParams = 'username=' + escape(username) + '&password=' + escape(password);
 
           var httpRequest = new XMLHttpRequest();
-          httpRequest.open("POST", 'http://localhost:4000/api/authenticate',  true);
+          httpRequest.open("POST", 'https://sink.heroku.com/api/authenticate',  true);
           httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
 
           httpRequest.onload = function() {
@@ -84,7 +89,7 @@
             bwongsink.util.hideElementById('login_form');
 
             var response = bwongsink.util.safelyParseJson(httpRequest.responseText);
-            bwongsink.util.setPref('extensions.bwongsink.apiKey', response['api_key']);
+            bwongsink.util.setPref('apiKey', response['api_key']);
             bwongsink.api.listNodes(response['nodes']);
           };
           httpRequest.send(serializedParams);
@@ -100,38 +105,14 @@
           else {
             bwongsink.util.hideElementById('new_node_name_div');
           }
-        }
-      }
-
-      bwongsink.util = {
-        prefManager: null,
-
-        clearInputFieldById: function(field_id) {
-          document.getElementById(field_id).value = '';
         },
 
-        getPref: function(pref) {
-          var prefManager = bwongsink.util.getPrefManager();
-          return prefManager.getCharPref(pref);
-        },
-
-        getPrefManager: function() {
-          if (bwongsink.util.prefManager == null)
-            bwongsink.util.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-          return bwongsink.util.prefManager;
-        },
-
-        hideElementById: function(element_id) {
-          document.getElementById(element_id).className = 'hide';
-        },
-
-        showElementById: function(element_id) {
-          document.getElementById(element_id).className = '';
-        },
-
-        setPref: function(pref, value) {
-          var prefManager = bwongsink.util.getPrefManager();
-          prefManager.setCharPref(pref, value);
+        notifyExtensionOfDone: function() {
+            var ev = document.createEvent("Events");
+            var element = document.createElement("BwongSinkFirstRunDoneElement");
+            document.documentElement.appendChild(element);
+            ev.initEvent("BwongSinkFirstRunDone", true, false);
+            element.dispatchEvent(ev);
         }
       }
     </script>

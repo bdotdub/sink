@@ -16,7 +16,8 @@ bwongsink.util = {
 
   getPrefManager: function() {
     if (bwongsink.util.prefManager == null)
-      bwongsink.util.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+      bwongsink.util.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefService).getBranch('extensions.bwongsink.');
+
     return bwongsink.util.prefManager;
   },
 
@@ -24,18 +25,23 @@ bwongsink.util = {
     document.getElementById(element_id).className = 'hide';
   },
 
+  prefHasUserValue: function(pref) {
+    var prefManager = bwongsink.util.getPrefManager();
+    return prefManager.prefHasUserValue(pref);
+  },
+
   safelyParseJson: function(jsonStr) {
     var nativeJSON = Components.classes["@mozilla.org/dom/json;1"].createInstance(Components.interfaces.nsIJSON);
     return nativeJSON.decode(jsonStr);
   },
 
-  showElementById: function(element_id) {
-    document.getElementById(element_id).className = '';
-  },
-
   setPref: function(pref, value) {
     var prefManager = bwongsink.util.getPrefManager();
     prefManager.setCharPref(pref, value);
+  },
+
+  showElementById: function(element_id) {
+    document.getElementById(element_id).className = '';
   }
 }
 
