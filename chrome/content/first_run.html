@@ -64,7 +64,12 @@
           }
           html += '<option value="BWONGSINKCREATE">* First Time Installing sink on this computer</option>'
           html += '</select>'
-          html += '<div id="new_node_name_div" class="hide">'
+
+          var hideNodeName = ''
+          if (nodeList.length != 0)
+            hideNodeName = ' class="hide"'
+          html += '<div id="new_node_name_div"' + hideNodeName  + '>'
+
           html += 'Name this computer:<br /><input type="text" id="new_node_name" />'
           html += '</div>'
           html += '<input type="submit" value="Choose" />'

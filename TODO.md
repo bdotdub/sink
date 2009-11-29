@@ -6,6 +6,10 @@ TODO
 * First run page:
   * Improve CSS for first run page
   * Handle javascript errors
-  * Handle if no nodes returned from server
 * Add preferences xul
 * Factor out things like dev and prod servers
+
+2009/11/28
+----------
+* Handle if no nodes returned from server
+
