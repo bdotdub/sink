@@ -8,6 +8,7 @@ TODO
   * Handle javascript errors
 * Add preferences xul
 * Factor out things like dev and prod servers
+* Check if we need to sink with the server on the client side
 
 2009/11/28
 ----------

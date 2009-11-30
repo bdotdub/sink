@@ -8,8 +8,8 @@
     <em:creator>Benny Wong</em:creator>
     <em:contributor></em:contributor>
     <em:description>Your tabs, from everywhere anywhere.</em:description>
-    <em:aboutURL>chrome://net.bwong.sink/content/about.xul</em:aboutURL>
-    <em:optionsURL>chrome://net.bwong.sink/content/options.xul</em:optionsURL>
+    <em:aboutURL>chrome://bwongsink/content/about.xul</em:aboutURL>
+    <em:optionsURL>chrome://bwongsink/content/options.xul</em:optionsURL>
     <em:targetApplication>
       <Description>
         <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- Firefox -->
