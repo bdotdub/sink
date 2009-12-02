@@ -4,6 +4,7 @@ TODO
 * Default preferences
 * Make send to server interval a preference
 * First run page:
+  * Register if no account
   * Improve CSS for first run page
   * Handle javascript errors
 * Add preferences xul
